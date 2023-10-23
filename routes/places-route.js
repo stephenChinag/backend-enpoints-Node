@@ -6,4 +6,6 @@ const placeControl = require("../controller/placeController");
 
 router.get("/:pid", placeControl.getPlaces);
 
+router.post("/");
+
 module.exports = router;

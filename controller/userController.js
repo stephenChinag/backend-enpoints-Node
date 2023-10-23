@@ -1,5 +1,5 @@
 const DUMMY_PLACES = require("../model/dummy_data");
-
+const httpError = require("../model/http-error");
 exports.getUserId = (req, res, next) => {
   const userId = req.params.uid;
 
@@ -7,9 +7,7 @@ exports.getUserId = (req, res, next) => {
     return p.creator === userId;
   });
   if (!place) {
-    const error = new Error("Something is Wrong with the user ID");
-    error.code = 404;
-    return next(error);
+    throw new httpError("Could not find a place for the provided Id", 404);
   }
   res.json({ place });
 };
