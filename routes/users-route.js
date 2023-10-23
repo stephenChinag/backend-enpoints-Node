@@ -2,8 +2,14 @@ const express = require("express");
 
 const router = express.Router();
 
-const userController = require("../controller/userController");
+const usersController = require("../controller/userController");
 
-router.get("/:uid", userController.getUserId);
+router.get("/");
+
+router.post("/signup", usersController.postSignUp);
+
+router.post("/login", usersController.postLogin);
+
+router.get("/:uid", usersController.getPlacesByUserId);
 
 module.exports = router;

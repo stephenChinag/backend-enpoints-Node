@@ -6,6 +6,9 @@ const placeControl = require("../controller/placeController");
 
 router.get("/:pid", placeControl.getPlaces);
 
-router.post("/");
+router.post("/", placeControl.creatPlace);
 
+router.patch("/:pid", placeControl.updatePlace);
+
+router.delete("/:pid", placeControl.deletePlace);
 module.exports = router;
