@@ -1,24 +1,35 @@
-const DUMMY_PLACES = require("../model/dummy_data");
 const DUMMY_USERS = require("../model/dummy_user");
 const httpError = require("../model/http-error");
-
+const { v4: uuidv4 } = require("uuid");
 // get Places by Use ID
-exports.getPlacesByUserId = (req, res, next) => {
-  const userId = req.params.uid;
-
-  const place = DUMMY_PLACES.filter((p) => {
-    return p.creator === userId;
-  });
-  if (!place || place.length === 0) {
-    throw new httpError("Could not find a place for the provided Id", 404);
-  }
-  res.json({ place });
-};
 
 exports.getUsers = (req, res, next) => {
   res.json({ users: DUMMY_USERS });
 };
 
-exports.postLogin = (req, res, next) => {};
+exports.postSignUp = (req, res, next) => {
+  const { name, email, password } = req.body;
+  const hasSignedUp = DUMMY_USERS.find((u) => u.email === email);
+  if (hasSignedUp) {
+    throw new httpError("email already exit", 409);
+  }
+  const createdUser = {
+    id: uuidv4(),
+    name,
+    email,
+    password,
+  };
+  DUMMY_USERS.push(createdUser);
 
-exports.postSignUp = (req, res, next) => {};
+  res.status(201).json({ user: createdUser });
+};
+
+exports.postLogin = (req, res, next) => {
+  const { email, password } = req.body;
+  const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
+
+  if (!identifiedUser || identifiedUser.password !== password) {
+    throw new httpError("Invalid UserName Or Password", 404);
+  }
+  res.status(200).json({ message: "Successfully Logged IN" });
+};

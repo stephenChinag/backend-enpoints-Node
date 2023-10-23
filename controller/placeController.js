@@ -3,6 +3,18 @@ const httpError = require("../model/http-error");
 //const uuid = require("uuid/dist/v4");
 //import { v4 as uuidv4 } from "uuid";
 const { v4: uuidv4 } = require("uuid");
+
+exports.getPlacesByUserId = (req, res, next) => {
+  const userId = req.params.uid;
+
+  const place = DUMMY_PLACES.filter((p) => {
+    return p.creator === userId;
+  });
+  if (!place || place.length === 0) {
+    throw new httpError("Could not find a place for the provided Id", 404);
+  }
+  res.json({ place });
+};
 // Get places
 exports.getPlaces = (req, res, next) => {
   const placeId = req.params.pid;

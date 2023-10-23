@@ -4,12 +4,10 @@ const router = express.Router();
 
 const usersController = require("../controller/userController");
 
-router.get("/");
+router.get("/", usersController.getUsers);
 
 router.post("/signup", usersController.postSignUp);
 
 router.post("/login", usersController.postLogin);
-
-router.get("/:uid", usersController.getPlacesByUserId);
 
 module.exports = router;

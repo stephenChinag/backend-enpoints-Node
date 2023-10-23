@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 app.use("/api/places", placeRouter);
 
-app.use("/api/places/user", userRouter);
+app.use("/api/users", userRouter);
 
 // handling incorrect route middleware
 app.use((req, res, next) => {

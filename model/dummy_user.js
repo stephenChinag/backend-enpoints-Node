@@ -1,4 +1,4 @@
-exports.DUMMY_USERS = [
+const DUMMY_USERS = [
   {
     id: "u1",
     name: " Stephen Chinag",
@@ -6,3 +6,5 @@ exports.DUMMY_USERS = [
     password: "testers",
   },
 ];
+
+module.exports = DUMMY_USERS;
