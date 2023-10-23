@@ -7,9 +7,9 @@ exports.getPlaces = (req, res, next) => {
     return p.id === placeId;
   });
   if (!place) {
-    return res
-      .status(404)
-      .json({ message: "Could not find a place for a provided Id" });
+    const error = new Error("Could not Find a place for the provided Id");
+    error.code = 400;
+    throw error;
   }
   console.log(placeId);
   console.log("GET req of places");

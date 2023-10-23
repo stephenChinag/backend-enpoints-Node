@@ -7,10 +7,9 @@ exports.getUserId = (req, res, next) => {
     return p.creator === userId;
   });
   if (!place) {
-    //const err = Error(" Place not found");
-    return res
-      .status(404)
-      .json({ message: "Could not find a place for a provided Id" });
+    const error = new Error("Something is Wrong with the user ID");
+    error.code = 404;
+    return next(error);
   }
-  res.json({ message: `the User id is ${userId}`, place });
+  res.json({ place });
 };
