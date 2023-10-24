@@ -1,7 +1,6 @@
 let DUMMY_PLACES = require("../model/dummy_data");
 const httpError = require("../model/http-error");
-//const uuid = require("uuid/dist/v4");
-//import { v4 as uuidv4 } from "uuid";
+const { validationResult } = require("express-validator");
 const { v4: uuidv4 } = require("uuid");
 
 exports.getPlacesByUserId = (req, res, next) => {
@@ -32,7 +31,11 @@ exports.getPlaces = (req, res, next) => {
 
 //
 exports.creatPlace = (req, res, next) => {
-  //using uject destructuring that is also avoid using multiple
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    throw new httpError("Invalid Input ", 422);
+  } //using uject destructuring that is also avoid using multiple
   // const title = req.body.title
   const { title, description, coordinates, address, creator } = req.body;
   const createPlace = {
@@ -53,6 +56,10 @@ exports.creatPlace = (req, res, next) => {
 exports.updatePlace = (req, res, next) => {
   const { title, description } = req.body;
   const placeId = req.params.pid;
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    throw new httpError("Please make sure all field are not empty");
+  }
 
   const updatedPlace = { ...DUMMY_PLACES.find((p) => p.id === placeId) };
   const placeIndex = DUMMY_PLACES.findIndex((p) => p.id === placeId);
@@ -70,6 +77,9 @@ exports.updatePlace = (req, res, next) => {
 
 exports.deletePlace = (req, res, next) => {
   const placeId = req.params.pid;
+  if (!DUMMY_PLACES.find((p) => p.id === placeId)) {
+    throw new httpError("no Id found ", 404);
+  }
   DUMMY_PLACES = DUMMY_PLACES.filter((p) => p.id !== placeId);
   res.status(200).json({ message: "Deleted Place" });
 };
